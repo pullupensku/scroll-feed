@@ -3,234 +3,276 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>SCROLL — Feed Vidéos</title>
+<title>SCROLL — Swipe</title>
 <style>
-  :root { --maxw: 440px; }
-  * { box-sizing: border-box; }
-  body { margin: 0; background:#000; color:#fff; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-  header { position: sticky; top: 0; background: #000; padding: 12px 16px; border-bottom: 1px solid #111; z-index: 10; }
-  header h1 { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: .2px; }
-  #status { font-size: 12px; color:#9aa; margin-top: 4px; }
-  main { display: flex; flex-direction: column; align-items: center; padding: 12px; gap: 16px; }
-  .card { width: 100%; max-width: var(--maxw); background: #050505; border: 1px solid #111; border-radius: 12px; overflow: hidden; }
-  .meta { padding: 10px 12px; }
-  .title { font-size: 14px; font-weight: 600; margin: 0 0 6px; color:#fff; }
-  .desc { font-size: 13px; color:#cfd3d7; margin: 0; }
-  iframe { width: 100%; aspect-ratio: 9 / 16; border: 0; display: block; background: #000; }
-  button.refresh { position: fixed; right: 12px; bottom: 12px; border:1px solid #222; background:#0a0a0a; color:#fff; padding:8px 10px; border-radius:10px; font-size:13px; }
-  .hint { font-size: 12px; color:#9aa; text-align: center; }
+  html, body {
+    margin: 0; height: 100%; background:#000; color:#fff; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  #app { position: fixed; inset: 0; display: flex; flex-direction: column; }
+  header {
+    position: fixed; top: 0; left: 0; right: 0; height: 44px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 12px; background: rgba(0,0,0,.4); backdrop-filter: blur(6px); z-index: 10;
+    border-bottom: 1px solid #111;
+  }
+  header .title { font-size: 15px; font-weight: 600; }
+  header .status { font-size: 12px; color:#9aa; }
+  #stage {
+    position: absolute; inset: 0; top: 44px; /* sous l’en-tête */
+    touch-action: none; /* meilleur contrôle du swipe */
+    display: grid; place-items: center;
+  }
+  .navHint {
+    position: fixed; right: 10px; bottom: 10px; font-size: 11px; color:#9aa; background: rgba(0,0,0,.4);
+    border: 1px solid #222; padding: 6px 8px; border-radius: 8px;
+  }
+  .meta {
+    position: fixed; left: 10px; bottom: 10px; right: 10px;
+    background: linear-gradient(to top, rgba(0,0,0,.6), transparent);
+    padding: 10px; border-radius: 10px;
+  }
+  .meta h2 { margin: 0 0 4px; font-size: 14px; }
+  .meta p  { margin: 0; font-size: 12px; color:#cfd3d7; }
+  iframe {
+    width: 100%; height: 100%;
+    aspect-ratio: 9/16; border: 0; background: #000;
+  }
+  .frameShell {
+    width: 100vw; height: calc(100vh - 44px);
+    max-width: 480px; /* confort mobile */
+    display: grid; place-items: center; margin: 0 auto;
+  }
+  .hidden { display: none !important; }
+  .btn {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,.35); border:1px solid #222; color:#fff; padding:8px 10px; border-radius:10px; font-size:13px;
+  }
+  .btn.left { left: 8px; } .btn.right { right: 8px; }
 </style>
 </head>
 <body>
+<div id="app">
   <header>
-    <h1>SCROLL — Flux</h1>
-    <div id="status">Chargement…</div>
+    <div class="title">SCROLL — Swipe</div>
+    <div class="status" id="status">Chargement…</div>
   </header>
 
-  <main id="feed">
-    <p class="hint">Le flux se met à jour depuis ta Google Sheet (CSV live).</p>
-  </main>
+  <div id="stage">
+    <!-- double buffer: 2 iframes, on alterne pour un switch fluide -->
+    <div class="frameShell"><iframe id="playerA" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+    <div class="frameShell hidden"><iframe id="playerB" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  </div>
 
-  <button class="refresh" id="manualRefresh">Rafraîchir</button>
+  <div class="meta" id="meta"></div>
+  <div class="navHint">Swipe ↑ / ↓ • ou ◀︎ ▶︎</div>
+  <button class="btn left"  id="prevBtn">◀︎</button>
+  <button class="btn right" id="nextBtn">▶︎</button>
+</div>
 
 <script>
-/** 🔗 1) Remplace par ton URL CSV publiée depuis Google Sheets */
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfUAL6YCQ9iaAduwCP8UInGxkjCZw7KpQ1AUU7guml9XWqf9F3sg7SYsaEgN0vFdwJvWYMC63rgHt9/pub?gid=459772149&single=true&output=csv";
+/** 1) Ton CSV Google Sheets (publié “au format CSV”) */
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTfUAL6YCQ9iaAduwCP8UInGxkjCZw7KpQ1AUU7guml9XWqf9F3sg7SYsaEgN0vFdwJvWYMC63rgHt9/pubhtml";
 
-/** ⚙️ Réglages simples */
-const AUTO_REFRESH_MS = 30000; // auto-refresh toutes les 30 s (mets 0 pour désactiver)
-const YT_PARAMS = "autoplay=0&mute=1&modestbranding=1&rel=0&playsinline=1";
+/** 2) Réglages */
+const AUTO_REFRESH_MS = 30000;           // relecture CSV toutes les 30s
+const YT_PARAMS = "autoplay=1&mute=1&modestbranding=1&rel=0&playsinline=1"; // autoplay silencieux
+const START_INDEX = 0;                   // index de départ
 
-/** Utilitaires */
+/** 3) État */
+let data = [];          // liste des vidéos {titre, url, type, ordre, description}
+let index = START_INDEX;
+let usingA = true;      // quel iframe est visible
+let lastHash = "";
+
+/** 4) Utils DOM */
 const $ = s => document.querySelector(s);
 const statusEl = $("#status");
-const feedEl = $("#feed");
-let lastDataHash = "";
+const metaEl = $("#meta");
+const frameA = $("#playerA");
+const frameB = $("#playerB");
+const shellA = frameA.parentElement;
+const shellB = frameB.parentElement;
+const stage  = $("#stage");
 
-/** Petit parseur CSV compatible guillemets (Google Sheets) */
+/** 5) CSV parsing (gère guillemets) */
 function parseCSV(text) {
   const rows = [];
   let i = 0, cur = "", row = [], inQuotes = false;
-
   while (i < text.length) {
-    const char = text[i];
-
-    if (char === '"') {
-      if (inQuotes && text[i+1] === '"') { // échappement ""
-        cur += '"';
-        i += 2;
-        continue;
-      }
-      inQuotes = !inQuotes;
-      i++;
-      continue;
+    const c = text[i];
+    if (c === '"') { if (inQuotes && text[i+1] === '"') { cur += '"'; i+=2; continue; } inQuotes = !inQuotes; i++; continue; }
+    if (!inQuotes && (c === ',' || c === '\n' || c === '\r')) {
+      row.push(cur); cur = "";
+      if (c === '\n' || c === '\r') { if (row.some(v=>v!=="" )) rows.push(row); row = []; }
+      i++; continue;
     }
-
-    if (!inQuotes && (char === ',' || char === '\n' || char === '\r')) {
-      row.push(cur);
-      cur = "";
-      // fin de ligne
-      if (char === '\n' || char === '\r') {
-        if (row.some(v => v !== "")) rows.push(row);
-        row = [];
-      }
-      i++;
-      continue;
-    }
-
-    cur += char;
-    i++;
+    cur += c; i++;
   }
-  // flush final
-  if (cur.length || row.length) {
-    row.push(cur);
-    if (row.some(v => v !== "")) rows.push(row);
-  }
+  if (cur.length || row.length) { row.push(cur); if (row.some(v=>v!=="" )) rows.push(row); }
   return rows;
 }
-
-/** Convertit un tableau CSV → objets avec noms de colonnes */
 function csvToObjects(csvRows) {
   if (!csvRows.length) return [];
-  const header = csvRows[0].map(h => (h || "").trim());
-  const rows = csvRows.slice(1);
-  return rows.map(r => {
-    const obj = {};
-    header.forEach((h, idx) => { obj[h] = (r[idx] || "").trim(); });
-    return obj;
-  }).filter(Boolean);
+  const header = csvRows[0].map(h => (h||"").trim());
+  return csvRows.slice(1).map(r => {
+    const o = {}; header.forEach((h, i) => o[h] = (r[i]||"").trim()); return o;
+  });
 }
-
-/** Mapping tolérant : supporte "Titre" (majuscule) et "titre" */
-function normalizeRow(obj) {
-  const titre = obj.Titre ?? obj.titre ?? "";
-  const url = obj.url ?? obj.URL ?? "";
-  const type = (obj.type ?? obj.Type ?? "").toLowerCase();
-  const ordreRaw = obj.ordre ?? obj.Ordre ?? "";
+function normalizeRow(o) {
+  const titre = o.Titre ?? o.titre ?? "";
+  const url = o.url ?? o.URL ?? "";
+  const type = (o.type ?? o.Type ?? "").toLowerCase();
+  const ordreRaw = o.ordre ?? o.Ordre ?? "";
   const ordre = ordreRaw === "" ? null : Number(ordreRaw);
-  const description = obj.description ?? obj.Description ?? "";
+  const description = o.description ?? o.Description ?? "";
   return { titre, url, type, ordre, description };
 }
-
-/** Extraction d'ID YouTube robuste (watch, youtu.be, shorts, embed) */
 function extractYouTubeId(url) {
   if (!url) return "";
   try {
     const u = new URL(url);
-    // shorts
-    if (u.hostname.includes("youtube.com") && u.pathname.startsWith("/shorts/")) {
-      return u.pathname.split("/")[2] || "";
-    }
-    // watch?v=
-    const vid = u.searchParams.get("v");
-    if (vid) return vid;
-    // youtu.be/{id}
-    if (u.hostname === "youtu.be") {
-      return u.pathname.replace("/", "");
-    }
-    // embed/{id}
-    if (u.pathname.includes("/embed/")) {
-      return u.pathname.split("/embed/")[1].split("/")[0];
-    }
+    if (u.hostname.includes("youtube.com") && u.pathname.startsWith("/shorts/")) return u.pathname.split("/")[2] || "";
+    const vid = u.searchParams.get("v"); if (vid) return vid;
+    if (u.hostname === "youtu.be") return u.pathname.replace("/", "");
+    if (u.pathname.includes("/embed/")) return u.pathname.split("/embed/")[1].split("/")[0];
     return "";
-  } catch {
-    return "";
-  }
+  } catch { return ""; }
+}
+function simpleHash(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}return h.toString();}
+
+/** 6) Tri: ordre croissant d’abord, puis aléatoire */
+function sortOrShuffle(items){
+  const withOrdre = items.filter(x => Number.isFinite(x.ordre)).sort((a,b)=>a.ordre-b.ordre);
+  const without  = items.filter(x => !Number.isFinite(x.ordre));
+  for (let i = without.length-1; i>0; i--){ const j = Math.floor(Math.random()*(i+1)); [without[i], without[j]] = [without[j], without[i]]; }
+  return [...withOrdre, ...without];
 }
 
-/** Hash simple pour savoir si les données ont changé */
-function simpleHash(str) {
-  let h = 0, i, chr;
-  if (str.length === 0) return h.toString();
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i);
-    h = ((h << 5) - h) + chr;
-    h |= 0;
-  }
-  return h.toString();
-}
-
-/** Rendu du feed */
-function renderFeed(items) {
-  feedEl.innerHTML = "";
-  if (!items.length) {
-    feedEl.innerHTML = `<p class="hint">Aucune vidéo trouvée (colonne <b>type</b> = "video").</p>`;
-    return;
-  }
-
-  items.forEach(item => {
-    const id = extractYouTubeId(item.url);
-    if (!id) return;
-
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <iframe
-        src="https://www.youtube.com/embed/${id}?${YT_PARAMS}"
-        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen
-      ></iframe>
-      <div class="meta">
-        <h2 class="title">${item.titre || "Sans titre"}</h2>
-        ${item.description ? `<p class="desc">${item.description}</p>` : ""}
-      </div>
-    `;
-    feedEl.appendChild(card);
-  });
-}
-
-/** Tri par `ordre` si présent, sinon ordre aléatoire */
-function sortOrShuffle(items) {
-  const withOrdre = items.filter(x => Number.isFinite(x.ordre));
-  const withoutOrdre = items.filter(x => !Number.isFinite(x.ordre));
-
-  withOrdre.sort((a,b) => a.ordre - b.ordre);
-
-  for (let i = withoutOrdre.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [withoutOrdre[i], withoutOrdre[j]] = [withoutOrdre[j], withoutOrdre[i]];
-  }
-  return [...withOrdre, ...withoutOrdre];
-}
-
-/** Chargement du CSV + rendu */
-async function loadAndRender() {
+/** 7) Chargement CSV (sans casser la position courante) */
+async function refreshData(){
   try {
     statusEl.textContent = "Mise à jour…";
-    // Cache-busting pour être sûr de relire la dernière version
     const url = CSV_URL + (CSV_URL.includes("?") ? "&" : "?") + "_ts=" + Date.now();
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
-
-    const hash = simpleHash(text);
-    if (hash === lastDataHash && feedEl.children.length) {
-      statusEl.textContent = "À jour ✔︎";
-      return; // rien n'a changé
-    }
-    lastDataHash = hash;
+    const h = simpleHash(text);
+    if (h === lastHash && data.length) { statusEl.textContent = "À jour ✔︎"; return; }
+    lastHash = h;
 
     const rows = parseCSV(text);
-    let data = csvToObjects(rows).map(normalizeRow);
+    let arr = csvToObjects(rows).map(normalizeRow).filter(x => x.type === "video" && x.url);
+    arr = sortOrShuffle(arr);
 
-    // On ne garde que les vidéos
-    data = data.filter(x => x.type === "video" && x.url);
+    // si on a déjà une vidéo affichée, tenter de retrouver le même id pour conserver l’index
+    let currentId = currentVideoId();
+    data = arr;
+    if (currentId) {
+      const pos = data.findIndex(v => extractYouTubeId(v.url) === currentId);
+      if (pos >= 0) index = pos;
+      else index = Math.min(index, data.length-1);
+    } else {
+      index = Math.min(index, data.length-1);
+    }
 
-    const finalList = sortOrShuffle(data);
-    renderFeed(finalList);
-    statusEl.textContent = `Chargé (${finalList.length} vidéos) ✔︎`;
+    statusEl.textContent = `Chargé (${data.length}) ✔︎`;
+    renderCurrent(true);
+    // pré-charge next
+    preloadNext();
   } catch (e) {
     console.error(e);
-    statusEl.textContent = "Erreur de chargement du CSV 😕";
+    statusEl.textContent = "Erreur CSV 😕";
   }
 }
 
-$("#manualRefresh").addEventListener("click", loadAndRender);
+/** 8) Rendu & navigation */
+function playerVisible(){ return usingA ? frameA : frameB; }
+function playerHidden(){  return usingA ? frameB : frameA; }
+function shellVisible(){  return usingA ? shellA : shellB; }
+function shellHidden(){   return usingA ? shellB : shellA; }
 
-loadAndRender();
-if (AUTO_REFRESH_MS > 0) {
-  setInterval(loadAndRender, AUTO_REFRESH_MS);
+function setPlayerSrc(iframe, id){
+  iframe.src = id ? `https://www.youtube.com/embed/${id}?${YT_PARAMS}` : "";
 }
+function currentVideoId(){
+  const v = data[index]; if (!v) return "";
+  return extractYouTubeId(v.url);
+}
+
+function renderCurrent(force=false){
+  const v = data[index]; if (!v) return;
+  const id = extractYouTubeId(v.url);
+
+  // charger dans le buffer caché puis swap pour éviter flash noir
+  const hidden = playerHidden();
+  setPlayerSrc(hidden, id);
+
+  // swap
+  shellHidden().classList.remove("hidden");
+  shellVisible().classList.add("hidden");
+  usingA = !usingA;
+
+  // meta
+  metaEl.innerHTML = `<h2>${v.titre || "Sans titre"}</h2>${v.description ? `<p>${v.description}</p>` : ""}`;
+}
+
+function next(){ if (!data.length) return; index = (index + 1) % data.length; renderCurrent(); preloadNext(); }
+function prev(){ if (!data.length) return; index = (index - 1 + data.length) % data.length; renderCurrent(); preloadNext(); }
+
+function preloadNext(){
+  const n = (index + 1) % data.length;
+  const id = extractYouTubeId(data[n]?.url || "");
+  if (!id) return;
+  // charge le prochain dans le buffer caché pour switch instantané
+  setPlayerSrc(playerHidden(), id);
+}
+
+/** 9) Gestes & clavier */
+let startY = null, startX = null, startT = 0;
+stage.addEventListener("touchstart", (e)=>{
+  const t = e.touches[0]; startY = t.clientY; startX = t.clientX; startT = Date.now();
+},{passive:true});
+stage.addEventListener("touchend", (e)=>{
+  if (startY === null) return;
+  const t = e.changedTouches[0];
+  const dy = t.clientY - startY;
+  const dx = t.clientX - startX;
+  const dt = Date.now() - startT;
+  const THRESH = 60; // px
+  const FAST = 400;  // ms
+  if (Math.abs(dy) > Math.abs(dx) && (Math.abs(dy) > THRESH || dt < FAST)) {
+    if (dy < 0) next(); else prev();
+  }
+  startY = startX = null;
+},{passive:true});
+
+document.addEventListener("keydown",(e)=>{
+  if (e.key === "ArrowUp" || e.key === "ArrowLeft") prev();
+  if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === " ") next();
+});
+
+/** 10) Visibilité (pause quand onglet caché) */
+document.addEventListener("visibilitychange", ()=>{
+  const p = playerVisible();
+  if (!p) return;
+  if (document.hidden) {
+    // mettre pause en retirant autoplay, on rechargera au retour
+    const src = p.src.replace("autoplay=1","autoplay=0");
+    p.src = src;
+  } else {
+    const src = p.src.replace("autoplay=0","autoplay=1");
+    p.src = src;
+  }
+});
+
+/** 11) Boutons */
+$("#nextBtn").addEventListener("click", next);
+$("#prevBtn").addEventListener("click", prev);
+
+/** 12) Go */
+refreshData();
+if (AUTO_REFRESH_MS > 0) setInterval(refreshData, AUTO_REFRESH_MS);
 </script>
 </body>
 </html>
+
