@@ -1,612 +1,596 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <title>SCROLL • productif</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0f1a" />
+  <style>
+    :root{
+      --bg:#0b0f1a; --panel:#1f2937; --panel2:#111827; --text:#e5e7eb; --muted:#9ca3af;
+      --brand:#7c3aed; --ok:#10b981; --warn:#f59e0b; --danger:#ef4444; --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header,footer{padding:1rem;background:var(--panel2);color:var(--muted)}
+    main{padding:1rem;max-width:1100px;margin:auto}
+    .toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+    .chip{display:flex;align-items:center;gap:.5rem;background:var(--panel);border:1px solid #2b3647;padding:.5rem .7rem;border-radius:999px}
+    .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+    .card{background:var(--panel);border:1px solid #2b3647;border-radius:var(--radius);overflow:hidden}
+    .thumb{aspect-ratio:16/9;background:linear-gradient(90deg,#2a3446 25%,#1b2331 37%,#2a3446 63%);background-size:400% 100%;animation:shimmer 2s linear infinite}
+    @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+    .body{padding:.75rem}
+    .title{margin:.2rem 0 .4rem;font-size:1rem;line-height:1.3}
+    .meta{color:var(--muted);font-size:.85rem}
+    .actions{display:flex;gap:.35rem;flex-wrap:wrap;padding:.6rem;border-top:1px dashed #2b3647}
+    .btn{flex:1;min-width:90px;padding:.45rem .6rem;border:none;border-radius:9px;background:#2a3446;color:var(--text);cursor:pointer;font-size:.85rem}
+    .btn.primary{background:var(--brand);color:#0b0f1a;font-weight:700}
+    .btn.ok{background:var(--ok);color:#0b0f1a}
+    .btn.warn{background:var(--warn);color:#0b0f1a}
+    .btn.danger{background:var(--danger)}
+    .badge{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #2b3647;background:#1b2331;color:var(--muted);padding:.2rem .5rem;border-radius:999px;font-size:.75rem}
+    .hidden{display:none}
+    .toast{position:fixed;bottom:1rem;right:1rem;background:var(--panel2);color:var(--text);padding:.7rem 1rem;border:1px solid #2b3647;border-radius:10px;opacity:0;transition:opacity .25s}
+    .toast.show{opacity:1}
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:20}
+    .modal-inner{background:var(--panel);border:1px solid #2b3647;border-radius:16px;max-width:720px;width:92%;padding:1rem 1.2rem;max-height:84vh;overflow:auto}
+    .modal h2{margin:.2rem 0 .6rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}
+    .theme-item{display:flex;gap:.5rem;align-items:center;background:#253044;border:1px solid #2b3647;border-radius:10px;padding:.5rem .6rem}
+    .theme-item small{color:var(--muted)}
+    .controls-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}
+    .pill{padding:.25rem .5rem;border:1px solid #2b3647;border-radius:999px;background:#192233;color:var(--muted);font-size:.8rem}
+    .row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .input{appearance:none;background:#192233;border:1px solid #2b3647;color:var(--text);padding:.5rem .6rem;border-radius:9px;min-width:220px}
+    .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}
+    .tag{display:inline-flex;align-items:center;gap:.35rem;background:#22304a;border:1px solid #2b3647;color:#cbd5e1;padding:.25rem .5rem;border-radius:999px;font-size:.8rem}
+    .tag button{background:transparent;border:none;color:#cbd5e1;cursor:pointer}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="fr"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;SCROLL • productif&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width,initial-scale=1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="theme-color" content="#0b0f1a" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg:#0b0f1a; --panel:#1f2937; --panel2:#111827; --text:#e5e7eb; --muted:#9ca3af;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--brand:#7c3aed; --ok:#10b981; --warn:#f59e0b; --danger:#ef4444; --radius:14px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>*{box-sizing:border-box}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>header,footer{padding:1rem;background:var(--panel2);color:var(--muted)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>main{padding:1rem;max-width:1100px;margin:auto}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.toolbar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.chip{display:flex;align-items:center;gap:.5rem;background:var(--panel);border:1px solid #2b3647;padding:.5rem .7rem;border-radius:999px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.card{background:var(--panel);border:1px solid #2b3647;border-radius:var(--radius);overflow:hidden}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.thumb{aspect-ratio:16/9;background:linear-gradient(90deg,#2a3446 25%,#1b2331 37%,#2a3446 63%);background-size:400% 100%;animation:shimmer 2s linear infinite}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.body{padding:.75rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.title{margin:.2rem 0 .4rem;font-size:1rem;line-height:1.3}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.meta{color:var(--muted);font-size:.85rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.actions{display:flex;gap:.35rem;flex-wrap:wrap;padding:.6rem;border-top:1px dashed #2b3647}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn{flex:1;min-width:90px;padding:.45rem .6rem;border:none;border-radius:9px;background:#2a3446;color:var(--text);cursor:pointer;font-size:.85rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn.primary{background:var(--brand);color:#0b0f1a;font-weight:700}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn.ok{background:var(--ok);color:#0b0f1a}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn.warn{background:var(--warn);color:#0b0f1a}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn.danger{background:var(--danger)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.badge{display:inline-flex;align-items:center;gap:.35rem;border:1px solid #2b3647;background:#1b2331;color:var(--muted);padding:.2rem .5rem;border-radius:999px;font-size:.75rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hidden{display:none}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.toast{position:fixed;bottom:1rem;right:1rem;background:var(--panel2);color:var(--text);padding:.7rem 1rem;border:1px solid #2b3647;border-radius:10px;opacity:0;transition:opacity .25s}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.toast.show{opacity:1}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>/* Modal */</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:20}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.modal-inner{background:var(--panel);border:1px solid #2b3647;border-radius:16px;max-width:720px;width:92%;padding:1rem 1.2rem;max-height:84vh;overflow:auto}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.modal h2{margin:.2rem 0 .6rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.5rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.theme-item{display:flex;gap:.5rem;align-items:center;background:#253044;border:1px solid #2b3647;border-radius:10px;padding:.5rem .6rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.theme-item small{color:var(--muted)}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.controls-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.pill{padding:.25rem .5rem;border:1px solid #2b3647;border-radius:999px;background:#192233;color:var(--muted);font-size:.8rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.row{display:flex;gap:.5rem;flex-wrap:wrap}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.input{appearance:none;background:#192233;border:1px solid #2b3647;color:var(--text);padding:.5rem .6rem;border-radius:9px;min-width:220px}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tag{display:inline-flex;align-items:center;gap:.35rem;background:#22304a;border:1px solid #2b3647;color:#cbd5e1;padding:.25rem .5rem;border-radius:999px;font-size:.8rem}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.tag button{background:transparent;border:none;color:#cbd5e1;cursor:pointer}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1">&lt;header&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="toolbar" role="region" aria-label="Actions rapides"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="badge"&gt;Sans historique&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button id="openThemeModal" class="btn"&gt;Thèmes du jour&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button id="clearBans" class="btn warn" title="Réinitialiser banlist/whitelist (local)"&gt;Reset filtres&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="sessionInfo" class="pill"&gt;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;SCROLL • productif&lt;/h1&gt;</p>
-<p class="p1">&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;main&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;section id="feed" class="feed" aria-label="Flux vidéos et fiches"&gt;&lt;/section&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="sentinel" aria-hidden="true"&gt;&lt;/div&gt;</p>
-<p class="p1">&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;footer&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;small&gt;© 2025 SCROLL – Feed utile, sans historique&lt;/small&gt;</p>
-<p class="p1">&lt;/footer&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Modal de sélection des thèmes + gestion WL/BL/Keywords --&gt;</p>
-<p class="p1">&lt;div id="themeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="themeTitle"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-inner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 id="themeTitle"&gt;Choisis tes thèmes du jour&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="meta"&gt;Ces thèmes servent de &lt;b&gt;mots-clés&lt;/b&gt; pour filtrer les vidéos de la session (multi-sélection). Tu peux aussi gérer ta &lt;b&gt;banlist/whitelist&lt;/b&gt; et des &lt;b&gt;mots-clés à exclure&lt;/b&gt;.&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3&gt;Thèmes&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="themeList" class="grid" role="group" aria-label="Thèmes disponibles"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="controls-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="pill"&gt;&lt;input id="newsFreshOnly" type="checkbox" checked&gt; Fraîcheur pour thèmes d’actualité (&amp;lt; 30 jours)&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="pill"&gt;&lt;input id="langFilter" type="checkbox" checked&gt; FR/EN uniquement&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="pill"&gt;&lt;input id="minViews" type="checkbox" checked&gt; ≥ 1000 vues&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h3&gt;Filtres avancés&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="row" style="margin:.4rem 0 .2rem"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="kwInput" class="input" type="text" placeholder="Ajouter un mot-clé à bloquer (ex: prank, shorts)" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="addKw" class="btn"&gt;Ajouter mot-clé&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Mots-clés bannis&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="kwTags" class="tags"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Whitelist chaînes&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="wlChanTags" class="tags"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Whitelist vidéos&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="wlVidTags" class="tags"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Ban chaînes&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="banChanTags" class="tags"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;Ban vidéos&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="banVidTags" class="tags"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="controls-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="validateThemes" class="btn primary"&gt;Valider&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div id="toast" class="toast" role="status" aria-live="polite"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>CONFIG / CONSTANTES</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">const API = "https://script.google.com/macros/s/AKfycbxGsoLaoDhRxfF0m37Qc3D01PU1qIv1s3VPTmNLUP8xSopgOODK9gjQZ57DwlCxLvde2w/exec";</p>
-<p class="p1">const RATIO = 5;<span class="Apple-converted-space">                  </span>// 5 vidéos pour 1 fiche</p>
-<p class="p1">const PAGE_SIZE = 24; <span class="Apple-converted-space">            </span>// cartes par page (infinite scroll)</p>
-<p class="p1">const FRESH_DAYS = 30;<span class="Apple-converted-space">            </span>// actualité: 30 jours (modifié)</p>
-<p class="p1">const NEWS_HINTS = ["news","actualité","update","urgence","breaking","AI","IA"]; // détecte thèmes "actualité"</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>ÉTAT / STOCKAGE LOCAL</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">const store = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>get: (k,def) =&gt; { try { return JSON.parse(localStorage.getItem(k) ?? JSON.stringify(def)); } catch { return def; } },</p>
-<p class="p1"><span class="Apple-converted-space">  </span>set: (k,v) =&gt; localStorage.setItem(k, JSON.stringify(v)),</p>
-<p class="p1"><span class="Apple-converted-space">  </span>del: (k) =&gt; localStorage.removeItem(k)</p>
-<p class="p1">};</p>
-<p class="p1">let whitelistVideos = store.get("whitelistVideos", []);</p>
-<p class="p1">let whitelistChannels = store.get("whitelistChannels", []);</p>
-<p class="p1">let banVideos = store.get("banVideos", []);</p>
-<p class="p1">let banChannels = store.get("banChannels", []);</p>
-<p class="p1">let favoriteVideos = store.get("favoriteVideos", []);</p>
-<p class="p1">let favoriteFiches = store.get("favoriteFiches", []);</p>
-<p class="p1">let blockedKeywords = store.get("blockedKeywords", []); // liste perso de mots à exclure</p>
-<p class="p2"><br></p>
-<p class="p1">// État runtime</p>
-<p class="p1">let RAW = { videos: [], fiches: [], themes: [] };</p>
-<p class="p1">let SESSION = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>chosenThemes: [],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>langFilter: true,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>minViews: true,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>newsFreshOnly: true,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>keywords: [],<span class="Apple-converted-space">        </span>// mots-clés à partir des thèmes + related</p>
-<p class="p1"><span class="Apple-converted-space">  </span>page: 0,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>mergedFeed: [],<span class="Apple-converted-space">      </span>// items fusionnés (après filtres)</p>
-<p class="p1"><span class="Apple-converted-space">  </span>usedVideoIds: new Set()</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>OUTILS</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">function toast(msg){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const t = document.getElementById("toast");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>t.textContent = msg; t.classList.add("show");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(()=&gt;t.classList.remove("show"), 1400);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// approx. détection langue FR/EN basée sur titre/chaîne (heuristique simple)</p>
-<p class="p1">function detectLangish(s=""){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const str = (s||"").toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const hasFR = /[àâäçéèêëîïôöùûüœ]/i.test(str) || /\b(le|la|les|des|un|une|et|ou|avec|sans|pour|chez|dans|sur|par)\b/.test(str);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const hasEN = /\b(the|and|with|without|how to|guide|tips|in|on|for|from)\b/.test(str);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const nonLatin = /[\u0400-\u04FF\u0600-\u06FF\u0900-\u097F\u4E00-\u9FFF]/.test(str);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(nonLatin) return "other";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(hasFR &amp;&amp; !hasEN) return "fr";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(hasEN &amp;&amp; !hasFR) return "en";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(hasFR &amp;&amp; hasEN) return "mixed";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return "en"; // fallback</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function isNewsTheme(theme="", related=""){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const hay = `${theme} ${related}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return NEWS_HINTS.some(k =&gt; hay.includes(k));</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function isFresh(publishedAt, days=FRESH_DAYS){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const d = new Date(publishedAt);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(Number.isNaN(+d)) return true; // si inconnue, ne bloque pas</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const age = (Date.now() - d.getTime()) / (1000*3600*24);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return age &lt;= days;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function toInt(x){ const n = parseInt(String(x).replace(/\D/g,"") || "0", 10); return Number.isFinite(n)? n : 0; }</p>
-<p class="p2"><br></p>
-<p class="p1">function matchKeywords(video, keywords){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const t = `${video.Titre||""} ${video.channelTitle||""}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return keywords.length === 0 || keywords.some(k =&gt; t.includes(k.toLowerCase()));</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">const $ = sel =&gt; document.querySelector(sel);</p>
-<p class="p1">const feedEl = $("#feed");</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>CHARGEMENT DES DONNÉES</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">async function loadAll(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const res = await fetch(API, {cache:"no-store"});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const data = await res.json();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>RAW.videos = Array.isArray(data.videos)? data.videos : [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>RAW.fiches = Array.isArray(data.fiches)? data.fiches : [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>RAW.themes = Array.isArray(data.themes)? data.themes : [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>buildThemeModal();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderAllLists();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function buildThemeModal(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const list = $("#themeList");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>list.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>RAW.themes.forEach(th=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const theme = th.Theme ?? th.theme ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const related = th.Related ?? th.related ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const div = document.createElement("label");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>div.className = "theme-item";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>div.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="checkbox" value="${escapeHtml(theme)}" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div&gt;${escapeHtml(theme)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>${related ? `&lt;small&gt;Related: ${escapeHtml(related)}&lt;/small&gt;` : ""}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>list.appendChild(div);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function escapeHtml(s){ return String(s).replace(/[&amp;&lt;&gt;"']/g, m =&gt; ({'&amp;':'&amp;amp;','&lt;':'&amp;lt;','&gt;':'&amp;gt;','"':'&amp;quot;','\'':'&amp;#39;'}[m])); }</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>CONSTRUCTION DU FEED</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">function startSession(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const chosen = [...document.querySelectorAll("#themeList input:checked")].map(i=&gt;i.value);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(chosen.length===0){ toast("Choisis au moins un thème"); return; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.chosenThemes = chosen;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.langFilter = $("#langFilter").checked;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.minViews = $("#minViews").checked;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.newsFreshOnly = $("#newsFreshOnly").checked;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const kws = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>RAW.themes.forEach(th=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const t = th.Theme ?? th.theme ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const r = (th.Related ?? th.related ?? "");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(chosen.includes(t)){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>kws.push(t);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>r.split(/[;,|]/).map(x=&gt;x.trim()).filter(Boolean).forEach(k=&gt;kws.push(k));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.keywords = Array.from(new Set(kws.map(s=&gt;s.toLowerCase())));</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>$("#sessionInfo").textContent = `Thèmes: ${chosen.join(", ")}`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$("#themeModal").classList.add("hidden");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.page = 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.mergedFeed = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.usedVideoIds = new Set();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>feedEl.innerHTML = "";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const filteredVideos = applyVideoFilters(RAW.videos, SESSION.keywords);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const filteredFiches = applyFicheFilters(RAW.fiches, SESSION.keywords);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.mergedFeed = mergeFeed(filteredVideos, filteredFiches, RATIO);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderNextPage();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function applyVideoFilters(videos, keywords){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const res = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for(const v of videos){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const id = v.videoId ?? v.videold ?? v.id ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const title = v.Titre ?? v.title ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const chId = v.channelID ?? v.channelId ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const chTitle = v.channelTitle ?? v.channel ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const publishedAt = v.publishedAt ?? v.published_at ?? v.date ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const views = toInt(v.viewCount ?? v.views ?? 0);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(banVideos.includes(id) || banChannels.includes(chId)) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(blockedKeywords.length){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const t = `${title} ${chTitle}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(blockedKeywords.some(k=&gt;t.includes(k.toLowerCase()))) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(SESSION.langFilter){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const lang = detectLangish(`${title} ${chTitle}`);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!(lang==="fr" || lang==="en" || lang==="mixed")) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(SESSION.minViews &amp;&amp; views &lt; 1000){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!(whitelistVideos.includes(id) || whitelistChannels.includes(chId))) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(!matchKeywords({Titre:title, channelTitle:chTitle}, keywords)){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!(whitelistVideos.includes(id) || whitelistChannels.includes(chId))) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(SESSION.newsFreshOnly){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const newsChosen = RAW.themes.some(th =&gt; SESSION.chosenThemes.includes(th.Theme ?? th.theme ?? "") &amp;&amp; isNewsTheme(th.Theme, th.Related));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(newsChosen &amp;&amp; !isFresh(publishedAt, FRESH_DAYS)){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(!(whitelistVideos.includes(id) || whitelistChannels.includes(chId))) continue;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(SESSION.usedVideoIds.has(id)) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>SESSION.usedVideoIds.add(id);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>res.push({</p>
-<p class="p1"><span class="Apple-converted-space">      </span>type:"video",</p>
-<p class="p1"><span class="Apple-converted-space">      </span>id, title, chId, chTitle, publishedAt, views,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>url: v.url,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>thumb: v.thumbnail ?? `https://i.ytimg.com/vi/${id}/hqdefault.jpg`</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return res;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function applyFicheFilters(fiches, keywords){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const res = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for(const f of fiches){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const title = f.Titre ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const matiere = f.Matière ?? f.Matiere ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const embed = f.Embed ?? f.embed ?? f.Url ?? f.URL ?? "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(!embed) continue;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const t = `${title} ${matiere}`.toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(keywords.length === 0 || keywords.some(k=&gt;t.includes(k.toLowerCase()))){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>res.push({ type:"fiche", title, matiere, embed });</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return res;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function mergeFeed(videos, fiches, ratio){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const merged = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let fi = 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for(let i=0;i&lt;videos.length;i++){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>merged.push(videos[i]);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if((i+1) % ratio === 0 &amp;&amp; fi &lt; fiches.length){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>merged.push(fiches[fi++]);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return merged;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>RENDU / UI</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">function renderNextPage(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const start = SESSION.page * PAGE_SIZE;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const end = start + PAGE_SIZE;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const batch = SESSION.mergedFeed.slice(start, end);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(batch.length === 0) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const frag = document.createDocumentFragment();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for(const item of batch){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if(item.type === "video") frag.appendChild(renderVideoCard(item));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>else frag.appendChild(renderFicheCard(item));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>feedEl.appendChild(frag);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.page++;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderVideoCard(v){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const a = document.createElement("article");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>a.className = "card";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const fav = favoriteVideos.includes(v.id);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const wv = whitelistVideos.includes(v.id), wc = whitelistChannels.includes(v.chId);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const bv = banVideos.includes(v.id), bc = banChannels.includes(v.chId);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>a.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="thumb" role="img" aria-label="Aperçu vidéo"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="body"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="title"&gt;${escapeHtml(v.title)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="meta"&gt;${escapeHtml(v.chTitle)} · ${v.views.toLocaleString("fr-FR")} vues · ${formatDate(v.publishedAt)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="actions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="btn primary" href="${v.url}" target="_blank" rel="noopener"&gt;Ouvrir YouTube&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ${fav?'ok':''}" data-action="fav-video" data-id="${v.id}"&gt;${fav?'★ Favori':'☆ Favori'}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ${wv?'ok':''}" data-action="whitelist-video" data-id="${v.id}"&gt;${wv?'✓ WL vidéo':'WL vidéo'}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ${wc?'ok':''}" data-action="whitelist-channel" data-id="${v.chId}"&gt;${wc?'✓ WL chaîne':'WL chaîne'}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ${bv||bc?'danger':''}" data-action="ban-video" data-id="${v.id}"&gt;${(bv||bc)?'Banni':'Ban vidéo'}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ${bc?'danger':''}" data-action="ban-channel" data-id="${v.chId}"&gt;${bc?'Chaîne bannie':'Ban chaîne'}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return a;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderFicheCard(f){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const a = document.createElement("article");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>a.className = "card";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const fav = favoriteFiches.includes(f.embed);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>a.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="thumb" role="img" aria-label="Aperçu fiche"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="body"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="title"&gt;${escapeHtml(f.title)}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="meta"&gt;Fiche · ${escapeHtml(f.matiere||"")}&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="actions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="btn primary" href="${f.embed}" target="_blank" rel="noopener"&gt;Ouvrir la fiche&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn ${fav?'ok':''}" data-action="fav-fiche" data-id="${f.embed}"&gt;${fav?'★ Favori':'☆ Favori'}&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return a;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function formatDate(d){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const dt = new Date(d);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(Number.isNaN(+dt)) return "";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return dt.toLocaleDateString("fr-FR", {year:"numeric", month:"short", day:"2-digit"});</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>ACTIONS BOUTONS (cartes)</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">document.addEventListener("click", (e)=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const btn = e.target.closest("button, a");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!btn) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const action = btn.dataset.action;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!action) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const id = btn.dataset.id;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>switch(action){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "fav-video":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toggleInArray("favoriteVideos", favoriteVideos, id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.toggle("ok");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.textContent = favoriteVideos.includes(id) ? "★ Favori" : "☆ Favori";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toast(favoriteVideos.includes(id)?"Ajouté aux favoris":"Retiré des favoris");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "fav-fiche":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toggleInArray("favoriteFiches", favoriteFiches, id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.toggle("ok");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.textContent = favoriteFiches.includes(id) ? "★ Favori" : "☆ Favori";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toast(favoriteFiches.includes(id)?"Fiche en favoris":"Fiche retirée");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "whitelist-video":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toggleInArray("whitelistVideos", whitelistVideos, id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.toggle("ok");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.textContent = whitelistVideos.includes(id) ? "✓ WL vidéo" : "WL vidéo";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toast(whitelistVideos.includes(id)?"Vidéo whitelisted":"Whitelist vidéo retirée");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "whitelist-channel":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toggleInArray("whitelistChannels", whitelistChannels, id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.toggle("ok");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.textContent = whitelistChannels.includes(id) ? "✓ WL chaîne" : "WL chaîne";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toast(whitelistChannels.includes(id)?"Chaîne whitelisted":"Whitelist chaîne retirée");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "ban-video":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toggleInArray("banVideos", banVideos, id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.toggle("danger");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.textContent = (banVideos.includes(id)) ? "Banni" : "Ban vidéo";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toast(banVideos.includes(id)?"Vidéo bannie":"Vidéo débannie");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "ban-channel":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toggleInArray("banChannels", banChannels, id);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.classList.toggle("danger");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.textContent = banChannels.includes(id) ? "Chaîne bannie" : "Ban chaîne";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>toast(banChannels.includes(id)?"Chaîne bannie":"Chaîne débannie");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>case "remove-tag":</p>
-<p class="p1"><span class="Apple-converted-space">      </span>removeFromList(btn.dataset.list, btn.dataset.value);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>break;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">function toggleInArray(key, arr, id){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const i = arr.indexOf(id);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(i&gt;=0) arr.splice(i,1); else arr.push(id);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set(key, arr);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function removeFromList(listName, value){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const map = {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"whitelistVideos": [whitelistVideos, "whitelistVideos"],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"whitelistChannels": [whitelistChannels, "whitelistChannels"],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"banVideos": [banVideos, "banVideos"],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"banChannels": [banChannels, "banChannels"],</p>
-<p class="p1"><span class="Apple-converted-space">    </span>"blockedKeywords": [blockedKeywords, "blockedKeywords"],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const pair = map[listName];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!pair) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const [arr, key] = pair;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const i = arr.indexOf(value);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(i&gt;=0) arr.splice(i,1);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set(key, arr);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function refreshAfterListChange(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(SESSION.chosenThemes.length===0) return; // pas encore démarré</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.page = 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.mergedFeed = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.usedVideoIds = new Set();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>feedEl.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const filteredVideos = applyVideoFilters(RAW.videos, SESSION.keywords);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const filteredFiches = applyFicheFilters(RAW.fiches, SESSION.keywords);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SESSION.mergedFeed = mergeFeed(filteredVideos, filteredFiches, RATIO);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderNextPage();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// reset filtres</p>
-<p class="p1">$("#clearBans").addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>whitelistVideos = []; whitelistChannels = []; banVideos = []; banChannels = []; blockedKeywords = [];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set("whitelistVideos", whitelistVideos);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set("whitelistChannels", whitelistChannels);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set("banVideos", banVideos);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set("banChannels", banChannels);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>store.set("blockedKeywords", blockedKeywords);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>toast("Filtres réinitialisés");</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">// ouvrir modale manuellement</p>
-<p class="p1">$("#openThemeModal").addEventListener("click", ()=&gt; { renderAllLists(); $("#themeModal").classList.remove("hidden") });</p>
-<p class="p2"><br></p>
-<p class="p1">// valider modale</p>
-<p class="p1">$("#validateThemes").addEventListener("click", startSession);</p>
-<p class="p2"><br></p>
-<p class="p1">// Ajout mot-clé bloqué</p>
-<p class="p1">$("#addKw").addEventListener("click", ()=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const inp = $("#kwInput");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const val = (inp.value||"").trim();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!val) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!blockedKeywords.includes(val)){</p>
-<p class="p1"><span class="Apple-converted-space">    </span>blockedKeywords.push(val);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>store.set("blockedKeywords", blockedKeywords);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>renderAllLists();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>refreshAfterListChange();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>toast(`Mot-clé bloqué: ${val}`);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>inp.value = "";</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">$("#kwInput").addEventListener("keydown", (e)=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(e.key === "Enter"){ e.preventDefault(); $("#addKw").click(); }</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">// rendu des listes (tags)</p>
-<p class="p1">function renderAllLists(){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTagList("#kwTags", blockedKeywords, x=&gt;x, "blockedKeywords");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTagList("#wlChanTags", whitelistChannels, x=&gt;x, "whitelistChannels");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTagList("#wlVidTags", whitelistVideos, x=&gt;x, "whitelistVideos");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTagList("#banChanTags", banChannels, x=&gt;x, "banChannels");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTagList("#banVidTags", banVideos, x=&gt;x, "banVideos");</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderTagList(selector, arr, labelFn, listName){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const el = document.querySelector(selector);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(!el) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>el.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>arr.forEach(val=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const tag = document.createElement("span");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>tag.className = "tag";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>tag.innerHTML = `${escapeHtml(labelFn(val))} &lt;button aria-label="Retirer" data-action="remove-tag" data-list="${listName}" data-value="${escapeHtml(val)}"&gt;✕&lt;/button&gt;`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>el.appendChild(tag);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>INFINITE SCROLL</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">new IntersectionObserver(entries=&gt;{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if(entries[0].isIntersecting) renderNextPage();</p>
-<p class="p1">}, {rootMargin:"600px"}).observe(document.getElementById("sentinel"));</p>
-<p class="p2"><br></p>
-<p class="p1">/** =========================</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>DÉMARRAGE</p>
-<p class="p1"><span class="Apple-converted-space"> </span>*<span class="Apple-converted-space">  </span>========================= */</p>
-<p class="p1">loadAll().catch(()=&gt;toast("Erreur de chargement des données"));</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<header>
+  <div class="toolbar" role="region" aria-label="Actions rapides">
+    <span class="badge">Sans historique</span>
+    <button id="openThemeModal" class="btn">Thèmes du jour</button>
+    <button id="clearBans" class="btn warn" title="Réinitialiser banlist/whitelist (local)">Reset filtres</button>
+    <span id="sessionInfo" class="pill"></span>
+  </div>
+  <h1>SCROLL • productif</h1>
+</header>
+
+<main>
+  <section id="feed" class="feed" aria-label="Flux vidéos et fiches"></section>
+  <div id="sentinel" aria-hidden="true"></div>
+</main>
+
+<footer>
+  <small>© 2025 SCROLL – Feed utile, sans historique</small>
+</footer>
+
+<!-- Modal de sélection des thèmes + gestion WL/BL/Keywords -->
+<div id="themeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="themeTitle">
+  <div class="modal-inner">
+    <h2 id="themeTitle">Choisis tes thèmes du jour</h2>
+    <p class="meta">Ces thèmes servent de <b>mots-clés</b> pour filtrer les vidéos de la session (multi-sélection). Tu peux aussi gérer ta <b>banlist/whitelist</b> et des <b>mots-clés à exclure</b>.</p>
+
+    <h3>Thèmes</h3>
+    <div id="themeList" class="grid" role="group" aria-label="Thèmes disponibles"></div>
+
+    <div class="controls-row">
+      <label class="pill"><input id="newsFreshOnly" type="checkbox" checked> Fraîcheur pour thèmes d’actualité (&lt; 30 jours)</label>
+      <label class="pill"><input id="langFilter" type="checkbox" checked> FR/EN uniquement</label>
+      <label class="pill"><input id="minViews" type="checkbox" checked> ≥ 1000 vues</label>
+    </div>
+
+    <h3>Filtres avancés</h3>
+    <div class="row" style="margin:.4rem 0 .2rem">
+      <input id="kwInput" class="input" type="text" placeholder="Ajouter un mot-clé à bloquer (ex: prank, shorts)" />
+      <button id="addKw" class="btn">Ajouter mot-clé</button>
+    </div>
+    <div class="grid">
+      <div>
+        <strong>Mots-clés bannis</strong>
+        <div id="kwTags" class="tags"></div>
+      </div>
+      <div>
+        <strong>Whitelist chaînes</strong>
+        <div id="wlChanTags" class="tags"></div>
+      </div>
+      <div>
+        <strong>Whitelist vidéos</strong>
+        <div id="wlVidTags" class="tags"></div>
+      </div>
+      <div>
+        <strong>Ban chaînes</strong>
+        <div id="banChanTags" class="tags"></div>
+      </div>
+      <div>
+        <strong>Ban vidéos</strong>
+        <div id="banVidTags" class="tags"></div>
+      </div>
+    </div>
+
+    <div class="controls-row">
+      <button id="validateThemes" class="btn primary">Valider</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/** =========================
+ *  CONFIG / CONSTANTES
+ *  ========================= */
+const API = "https://script.google.com/macros/s/AKfycbxGsoLaoDhRxfF0m37Qc3D01PU1qIv1s3VPTmNLUP8xSopgOODK9gjQZ57DwlCxLvde2w/exec";
+const RATIO = 5;                  // 5 vidéos pour 1 fiche
+const PAGE_SIZE = 24;             // cartes par page (infinite scroll)
+const FRESH_DAYS = 30;            // actualité: 30 jours (modifié)
+const NEWS_HINTS = ["news","actualité","update","urgence","breaking","AI","IA"]; // détecte thèmes "actualité"
+
+/** =========================
+ *  ÉTAT / STOCKAGE LOCAL
+ *  ========================= */
+const store = {
+  get: (k,def) => { try { return JSON.parse(localStorage.getItem(k) ?? JSON.stringify(def)); } catch { return def; } },
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+  del: (k) => localStorage.removeItem(k)
+};
+let whitelistVideos = store.get("whitelistVideos", []);
+let whitelistChannels = store.get("whitelistChannels", []);
+let banVideos = store.get("banVideos", []);
+let banChannels = store.get("banChannels", []);
+let favoriteVideos = store.get("favoriteVideos", []);
+let favoriteFiches = store.get("favoriteFiches", []);
+let blockedKeywords = store.get("blockedKeywords", []); // liste perso de mots à exclure
+
+// État runtime
+let RAW = { videos: [], fiches: [], themes: [] };
+let SESSION = {
+  chosenThemes: [],
+  langFilter: true,
+  minViews: true,
+  newsFreshOnly: true,
+  keywords: [],        // mots-clés à partir des thèmes + related
+  page: 0,
+  mergedFeed: [],      // items fusionnés (après filtres)
+  usedVideoIds: new Set()
+};
+
+/** =========================
+ *  OUTILS
+ *  ========================= */
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 1400);
+}
+
+// approx. détection langue FR/EN basée sur titre/chaîne (heuristique simple)
+function detectLangish(s=""){
+  const str = (s||"").toLowerCase();
+  const hasFR = /[àâäçéèêëîïôöùûüœ]/i.test(str) || /\b(le|la|les|des|un|une|et|ou|avec|sans|pour|chez|dans|sur|par)\b/.test(str);
+  const hasEN = /\b(the|and|with|without|how to|guide|tips|in|on|for|from)\b/.test(str);
+  const nonLatin = /[\u0400-\u04FF\u0600-\u06FF\u0900-\u097F\u4E00-\u9FFF]/.test(str);
+  if(nonLatin) return "other";
+  if(hasFR && !hasEN) return "fr";
+  if(hasEN && !hasFR) return "en";
+  if(hasFR && hasEN) return "mixed";
+  return "en"; // fallback
+}
+
+function isNewsTheme(theme="", related=""){
+  const hay = `${theme} ${related}`.toLowerCase();
+  return NEWS_HINTS.some(k => hay.includes(k));
+}
+
+function isFresh(publishedAt, days=FRESH_DAYS){
+  const d = new Date(publishedAt);
+  if(Number.isNaN(+d)) return true; // si inconnue, ne bloque pas
+  const age = (Date.now() - d.getTime()) / (1000*3600*24);
+  return age <= days;
+}
+
+function toInt(x){ const n = parseInt(String(x).replace(/\D/g,"") || "0", 10); return Number.isFinite(n)? n : 0; }
+
+function matchKeywords(video, keywords){
+  const t = `${video.Titre||""} ${video.channelTitle||""}`.toLowerCase();
+  return keywords.length === 0 || keywords.some(k => t.includes(k.toLowerCase()));
+}
+
+const $ = sel => document.querySelector(sel);
+const feedEl = $("#feed");
+
+/** =========================
+ *  CHARGEMENT DES DONNÉES
+ *  ========================= */
+async function loadAll(){
+  const res = await fetch(API, {cache:"no-store"});
+  const data = await res.json();
+  RAW.videos = Array.isArray(data.videos)? data.videos : [];
+  RAW.fiches = Array.isArray(data.fiches)? data.fiches : [];
+  RAW.themes = Array.isArray(data.themes)? data.themes : [];
+  buildThemeModal();
+  renderAllLists();
+}
+
+function buildThemeModal(){
+  const list = $("#themeList");
+  list.innerHTML = "";
+  RAW.themes.forEach(th=>{
+    const theme = th.Theme ?? th.theme ?? "";
+    const related = th.Related ?? th.related ?? "";
+    const div = document.createElement("label");
+    div.className = "theme-item";
+    div.innerHTML = `
+      <input type="checkbox" value="${escapeHtml(theme)}" />
+      <div>
+        <div>${escapeHtml(theme)}</div>
+        ${related ? `<small>Related: ${escapeHtml(related)}</small>` : ""}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])); }
+
+/** =========================
+ *  CONSTRUCTION DU FEED
+ *  ========================= */
+function startSession(){
+  const chosen = [...document.querySelectorAll("#themeList input:checked")].map(i=>i.value);
+  if(chosen.length===0){ toast("Choisis au moins un thème"); return; }
+  SESSION.chosenThemes = chosen;
+  SESSION.langFilter = $("#langFilter").checked;
+  SESSION.minViews = $("#minViews").checked;
+  SESSION.newsFreshOnly = $("#newsFreshOnly").checked;
+
+  const kws = [];
+  RAW.themes.forEach(th=>{
+    const t = th.Theme ?? th.theme ?? "";
+    const r = (th.Related ?? th.related ?? "");
+    if(chosen.includes(t)){
+      kws.push(t);
+      r.split(/[;,|]/).map(x=>x.trim()).filter(Boolean).forEach(k=>kws.push(k));
+    }
+  });
+  SESSION.keywords = Array.from(new Set(kws.map(s=>s.toLowerCase())));
+
+  $("#sessionInfo").textContent = `Thèmes: ${chosen.join(", ")}`;
+  $("#themeModal").classList.add("hidden");
+
+  SESSION.page = 0;
+  SESSION.mergedFeed = [];
+  SESSION.usedVideoIds = new Set();
+  feedEl.innerHTML = "";
+
+  const filteredVideos = applyVideoFilters(RAW.videos, SESSION.keywords);
+  const filteredFiches = applyFicheFilters(RAW.fiches, SESSION.keywords);
+  SESSION.mergedFeed = mergeFeed(filteredVideos, filteredFiches, RATIO);
+  renderNextPage();
+}
+
+function applyVideoFilters(videos, keywords){
+  const res = [];
+  for(const v of videos){
+    const id = v.videoId ?? v.videold ?? v.id ?? "";
+    const title = v.Titre ?? v.title ?? "";
+    const chId = v.channelID ?? v.channelId ?? "";
+    const chTitle = v.channelTitle ?? v.channel ?? "";
+    const publishedAt = v.publishedAt ?? v.published_at ?? v.date ?? "";
+    const views = toInt(v.viewCount ?? v.views ?? 0);
+
+    if(banVideos.includes(id) || banChannels.includes(chId)) continue;
+    if(blockedKeywords.length){
+      const t = `${title} ${chTitle}`.toLowerCase();
+      if(blockedKeywords.some(k=>t.includes(k.toLowerCase()))) continue;
+    }
+
+    if(SESSION.langFilter){
+      const lang = detectLangish(`${title} ${chTitle}`);
+      if(!(lang==="fr" || lang==="en" || lang==="mixed")) continue;
+    }
+
+    if(SESSION.minViews && views < 1000){
+      if(!(whitelistVideos.includes(id) || whitelistChannels.includes(chId))) continue;
+    }
+
+    if(!matchKeywords({Titre:title, channelTitle:chTitle}, keywords)){
+      if(!(whitelistVideos.includes(id) || whitelistChannels.includes(chId))) continue;
+    }
+
+    if(SESSION.newsFreshOnly){
+      const newsChosen = RAW.themes.some(th => SESSION.chosenThemes.includes(th.Theme ?? th.theme ?? "") && isNewsTheme(th.Theme, th.Related));
+      if(newsChosen && !isFresh(publishedAt, FRESH_DAYS)){
+        if(!(whitelistVideos.includes(id) || whitelistChannels.includes(chId))) continue;
+      }
+    }
+
+    if(SESSION.usedVideoIds.has(id)) continue;
+    SESSION.usedVideoIds.add(id);
+
+    res.push({
+      type:"video",
+      id, title, chId, chTitle, publishedAt, views,
+      url: v.url,
+      thumb: v.thumbnail ?? `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+    });
+  }
+  return res;
+}
+
+function applyFicheFilters(fiches, keywords){
+  const res = [];
+  for(const f of fiches){
+    const title = f.Titre ?? "";
+    const matiere = f.Matière ?? f.Matiere ?? "";
+    const embed = f.Embed ?? f.embed ?? f.Url ?? f.URL ?? "";
+    if(!embed) continue;
+    const t = `${title} ${matiere}`.toLowerCase();
+    if(keywords.length === 0 || keywords.some(k=>t.includes(k.toLowerCase()))){
+      res.push({ type:"fiche", title, matiere, embed });
+    }
+  }
+  return res;
+}
+
+function mergeFeed(videos, fiches, ratio){
+  const merged = [];
+  let fi = 0;
+  for(let i=0;i<videos.length;i++){
+    merged.push(videos[i]);
+    if((i+1) % ratio === 0 && fi < fiches.length){
+      merged.push(fiches[fi++]);
+    }
+  }
+  return merged;
+}
+
+/** =========================
+ *  RENDU / UI
+ *  ========================= */
+function renderNextPage(){
+  const start = SESSION.page * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+  const batch = SESSION.mergedFeed.slice(start, end);
+  if(batch.length === 0) return;
+
+  const frag = document.createDocumentFragment();
+  for(const item of batch){
+    if(item.type === "video") frag.appendChild(renderVideoCard(item));
+    else frag.appendChild(renderFicheCard(item));
+  }
+  feedEl.appendChild(frag);
+  SESSION.page++;
+}
+
+function renderVideoCard(v){
+  const a = document.createElement("article");
+  a.className = "card";
+  const fav = favoriteVideos.includes(v.id);
+  const wv = whitelistVideos.includes(v.id), wc = whitelistChannels.includes(v.chId);
+  const bv = banVideos.includes(v.id), bc = banChannels.includes(v.chId);
+
+  a.innerHTML = `
+    <div class="thumb" role="img" aria-label="Aperçu vidéo"></div>
+    <div class="body">
+      <div class="title">${escapeHtml(v.title)}</div>
+      <div class="meta">${escapeHtml(v.chTitle)} · ${v.views.toLocaleString("fr-FR")} vues · ${formatDate(v.publishedAt)}</div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="${v.url}" target="_blank" rel="noopener">Ouvrir YouTube</a>
+      <button class="btn ${fav?'ok':''}" data-action="fav-video" data-id="${v.id}">${fav?'★ Favori':'☆ Favori'}</button>
+      <button class="btn ${wv?'ok':''}" data-action="whitelist-video" data-id="${v.id}">${wv?'✓ WL vidéo':'WL vidéo'}</button>
+      <button class="btn ${wc?'ok':''}" data-action="whitelist-channel" data-id="${v.chId}">${wc?'✓ WL chaîne':'WL chaîne'}</button>
+      <button class="btn ${bv||bc?'danger':''}" data-action="ban-video" data-id="${v.id}">${(bv||bc)?'Banni':'Ban vidéo'}</button>
+      <button class="btn ${bc?'danger':''}" data-action="ban-channel" data-id="${v.chId}">${bc?'Chaîne bannie':'Ban chaîne'}</button>
+    </div>
+  `;
+  return a;
+}
+
+function renderFicheCard(f){
+  const a = document.createElement("article");
+  a.className = "card";
+  const fav = favoriteFiches.includes(f.embed);
+  a.innerHTML = `
+    <div class="thumb" role="img" aria-label="Aperçu fiche"></div>
+    <div class="body">
+      <div class="title">${escapeHtml(f.title)}</div>
+      <div class="meta">Fiche · ${escapeHtml(f.matiere||"")}</div>
+    </div>
+    <div class="actions">
+      <a class="btn primary" href="${f.embed}" target="_blank" rel="noopener">Ouvrir la fiche</a>
+      <button class="btn ${fav?'ok':''}" data-action="fav-fiche" data-id="${f.embed}">${fav?'★ Favori':'☆ Favori'}</button>
+    </div>
+  `;
+  return a;
+}
+
+function formatDate(d){
+  const dt = new Date(d);
+  if(Number.isNaN(+dt)) return "";
+  return dt.toLocaleDateString("fr-FR", {year:"numeric", month:"short", day:"2-digit"});
+}
+
+/** =========================
+ *  ACTIONS BOUTONS (cartes)
+ *  ========================= */
+document.addEventListener("click", (e)=>{
+  const btn = e.target.closest("button, a");
+  if(!btn) return;
+  const action = btn.dataset.action;
+  if(!action) return;
+  const id = btn.dataset.id;
+
+  switch(action){
+    case "fav-video":
+      toggleInArray("favoriteVideos", favoriteVideos, id);
+      btn.classList.toggle("ok");
+      btn.textContent = favoriteVideos.includes(id) ? "★ Favori" : "☆ Favori";
+      toast(favoriteVideos.includes(id)?"Ajouté aux favoris":"Retiré des favoris");
+      break;
+
+    case "fav-fiche":
+      toggleInArray("favoriteFiches", favoriteFiches, id);
+      btn.classList.toggle("ok");
+      btn.textContent = favoriteFiches.includes(id) ? "★ Favori" : "☆ Favori";
+      toast(favoriteFiches.includes(id)?"Fiche en favoris":"Fiche retirée");
+      break;
+
+    case "whitelist-video":
+      toggleInArray("whitelistVideos", whitelistVideos, id);
+      btn.classList.toggle("ok");
+      btn.textContent = whitelistVideos.includes(id) ? "✓ WL vidéo" : "WL vidéo";
+      renderAllLists();
+      refreshAfterListChange();
+      toast(whitelistVideos.includes(id)?"Vidéo whitelisted":"Whitelist vidéo retirée");
+      break;
+
+    case "whitelist-channel":
+      toggleInArray("whitelistChannels", whitelistChannels, id);
+      btn.classList.toggle("ok");
+      btn.textContent = whitelistChannels.includes(id) ? "✓ WL chaîne" : "WL chaîne";
+      renderAllLists();
+      refreshAfterListChange();
+      toast(whitelistChannels.includes(id)?"Chaîne whitelisted":"Whitelist chaîne retirée");
+      break;
+
+    case "ban-video":
+      toggleInArray("banVideos", banVideos, id);
+      btn.classList.toggle("danger");
+      btn.textContent = (banVideos.includes(id)) ? "Banni" : "Ban vidéo";
+      renderAllLists();
+      refreshAfterListChange();
+      toast(banVideos.includes(id)?"Vidéo bannie":"Vidéo débannie");
+      break;
+
+    case "ban-channel":
+      toggleInArray("banChannels", banChannels, id);
+      btn.classList.toggle("danger");
+      btn.textContent = banChannels.includes(id) ? "Chaîne bannie" : "Ban chaîne";
+      renderAllLists();
+      refreshAfterListChange();
+      toast(banChannels.includes(id)?"Chaîne bannie":"Chaîne débannie");
+      break;
+
+    case "remove-tag":
+      removeFromList(btn.dataset.list, btn.dataset.value);
+      renderAllLists();
+      refreshAfterListChange();
+      break;
+  }
+});
+
+function toggleInArray(key, arr, id){
+  const i = arr.indexOf(id);
+  if(i>=0) arr.splice(i,1); else arr.push(id);
+  store.set(key, arr);
+}
+
+function removeFromList(listName, value){
+  const map = {
+    "whitelistVideos": [whitelistVideos, "whitelistVideos"],
+    "whitelistChannels": [whitelistChannels, "whitelistChannels"],
+    "banVideos": [banVideos, "banVideos"],
+    "banChannels": [banChannels, "banChannels"],
+    "blockedKeywords": [blockedKeywords, "blockedKeywords"],
+  };
+  const pair = map[listName];
+  if(!pair) return;
+  const [arr, key] = pair;
+  const i = arr.indexOf(value);
+  if(i>=0) arr.splice(i,1);
+  store.set(key, arr);
+}
+
+function refreshAfterListChange(){
+  if(SESSION.chosenThemes.length===0) return; // pas encore démarré
+  SESSION.page = 0;
+  SESSION.mergedFeed = [];
+  SESSION.usedVideoIds = new Set();
+  feedEl.innerHTML = "";
+  const filteredVideos = applyVideoFilters(RAW.videos, SESSION.keywords);
+  const filteredFiches = applyFicheFilters(RAW.fiches, SESSION.keywords);
+  SESSION.mergedFeed = mergeFeed(filteredVideos, filteredFiches, RATIO);
+  renderNextPage();
+}
+
+// reset filtres
+$("#clearBans").addEventListener("click", ()=>{
+  whitelistVideos = []; whitelistChannels = []; banVideos = []; banChannels = []; blockedKeywords = [];
+  store.set("whitelistVideos", whitelistVideos);
+  store.set("whitelistChannels", whitelistChannels);
+  store.set("banVideos", banVideos);
+  store.set("banChannels", banChannels);
+  store.set("blockedKeywords", blockedKeywords);
+  renderAllLists();
+  refreshAfterListChange();
+  toast("Filtres réinitialisés");
+});
+
+// ouvrir modale manuellement
+$("#openThemeModal").addEventListener("click", ()=> { renderAllLists(); $("#themeModal").classList.remove("hidden") });
+
+// valider modale
+$("#validateThemes").addEventListener("click", startSession);
+
+// Ajout mot-clé bloqué
+$("#addKw").addEventListener("click", ()=>{
+  const inp = $("#kwInput");
+  const val = (inp.value||"").trim();
+  if(!val) return;
+  if(!blockedKeywords.includes(val)){
+    blockedKeywords.push(val);
+    store.set("blockedKeywords", blockedKeywords);
+    renderAllLists();
+    refreshAfterListChange();
+    toast(`Mot-clé bloqué: ${val}`);
+  }
+  inp.value = "";
+});
+
+$("#kwInput").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter"){ e.preventDefault(); $("#addKw").click(); }
+});
+
+// rendu des listes (tags)
+function renderAllLists(){
+  renderTagList("#kwTags", blockedKeywords, x=>x, "blockedKeywords");
+  renderTagList("#wlChanTags", whitelistChannels, x=>x, "whitelistChannels");
+  renderTagList("#wlVidTags", whitelistVideos, x=>x, "whitelistVideos");
+  renderTagList("#banChanTags", banChannels, x=>x, "banChannels");
+  renderTagList("#banVidTags", banVideos, x=>x, "banVideos");
+}
+
+function renderTagList(selector, arr, labelFn, listName){
+  const el = document.querySelector(selector);
+  if(!el) return;
+  el.innerHTML = "";
+  arr.forEach(val=>{
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.innerHTML = `${escapeHtml(labelFn(val))} <button aria-label="Retirer" data-action="remove-tag" data-list="${listName}" data-value="${escapeHtml(val)}">✕</button>`;
+    el.appendChild(tag);
+  });
+}
+
+/** =========================
+ *  INFINITE SCROLL
+ *  ========================= */
+new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting) renderNextPage();
+}, {rootMargin:"600px"}).observe(document.getElementById("sentinel"));
+
+/** =========================
+ *  DÉMARRAGE
+ *  ========================= */
+loadAll().catch(()=>toast("Erreur de chargement des données"));
+
+</script>
 </body>
 </html>
